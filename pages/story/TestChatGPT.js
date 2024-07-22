@@ -255,9 +255,6 @@ const styles = StyleSheet.create({
     top: 45,
     left: 12
   }
-  // bottomNavContainer: {
-  //   padding: 20
-  // }
 });
 
 export default TestChatGPT;
