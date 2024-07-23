@@ -1,6 +1,6 @@
 import React from 'react';
 import { TouchableNativeFeedback, TouchableOpacity, Modal, View, Text, Image, PanResponder, Animated, Dimensions } from 'react-native';
-import { useCurrency } from '../../components/CurrencyContext';
+import { useCurrency } from '../../components/main_game_logic/CurrencyContext';
 import { useTasks } from '../../components/main_game_logic/TasksContext';
 
 const window = Dimensions.get('window');

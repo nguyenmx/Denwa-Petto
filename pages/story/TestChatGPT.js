@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, Image, Touch
 import { GiftedChat, Bubble, InputToolbar } from 'react-native-gifted-chat';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackArrow from '../../modules/BackArrow';
-import { generateResponse } from '../../components/StoryModeBot';
+import { generateResponse } from '../../components/story_logic/StoryModeBot';
 import profileIcon from '../../images/ChatBotIcons/profileIcon.png';
 import stickerIcon from '../../images/ChatBotIcons/stickerIcon.png';
 import eraserIcon from '../../images/ChatBotIcons/eraserIcon.png';

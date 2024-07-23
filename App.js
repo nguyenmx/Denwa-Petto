@@ -28,7 +28,7 @@ import Shop from './pages/main/Shop';
 import ItemShop from './pages/main/ItemShop';
 import Currency from './pages/main/Currency';
 import ProfilePage from './pages/main/ProfilePage';
-import { CurrencyProvider } from './components/CurrencyContext';
+import { CurrencyProvider } from './components/main_game_logic/CurrencyContext';
 import Inventory from './pages/main/Inventory';
 import StepsConversion from './pages/combat/StepsConversion';
 import FriendshipLevel from './components/main_game_logic/FriendshipLevel';

@@ -3,7 +3,7 @@ import { View, Image, Dimensions, TouchableWithoutFeedback, TouchableOpacity, Pa
 import SpriteAnimation from './SpriteAnimation';
 import { useTap } from '../components/main_game_logic/TapContext';
 import { ReferenceDataContext } from '../components/ReferenceDataContext';
-import { useCurrency } from '../components/CurrencyContext';
+import { useCurrency } from '../components/main_game_logic/CurrencyContext';
 import angy from '../images/PetHouse/angy.png'
 import HG from '../images/HG.gif';
 import FriendshipLevel from '../components/main_game_logic/FriendshipLevel';

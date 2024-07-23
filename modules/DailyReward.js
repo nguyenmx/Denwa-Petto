@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Alert } from 'react-native';
-import { useCurrency } from '../components/CurrencyContext';
+import { useCurrency } from '../components/main_game_logic/CurrencyContext';
 
 // Doesnt actually give diamonds yet
 export const useDailyReward = () => {

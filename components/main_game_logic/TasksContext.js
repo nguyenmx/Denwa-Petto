@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 import { StyleSheet, Modal, View, TouchableOpacity, Image, Text } from 'react-native';
-import { useCurrency } from '../CurrencyContext';
+import { useCurrency } from './CurrencyContext';
 import coin from '../../images/PetHouse/Portrait/coin.png';
 import balloons from '../../images/balloons.gif';
 import sparkles from '../../images/sparkles.gif';

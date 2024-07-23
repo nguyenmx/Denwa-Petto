@@ -14,8 +14,6 @@ const Chatbot = ({ navigation, route }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [isSpeaking, setIsSpeaking] = useState(false);
-    
-    // const GEMINI_API_KEY = "AIzaSyB8N1R8oJBT81ciGDqEbkgWf00qQbcpERA";
 
     useEffect(() => {
         // Load messages when the component mounts

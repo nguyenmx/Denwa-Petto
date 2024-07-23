@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { View, Image, StyleSheet, Dimensions, PanResponder } from 'react-native';
 import { useTap } from '../components/main_game_logic/TapContext';
-import { useCurrency } from '../components/CurrencyContext';
+import { useCurrency } from '../components/main_game_logic/CurrencyContext';
 import { ReferenceDataContext } from '../components/ReferenceDataContext';
 import angy from '../images/PetHouse/angy.png';
 import HG from '../images/HG.gif'; // Import HG.gif image

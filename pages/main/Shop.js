@@ -5,7 +5,7 @@ import coin from '../../images/PetHouse/Portrait/coin.png';
 import { useNavigation } from '@react-navigation/native';
 import Currency from './Currency';
 import { Audio } from 'expo-av';
-import { withCurrency } from '../../components/CurrencyContext';
+import { withCurrency } from '../../components/main_game_logic/CurrencyContext';
 import mango from '../../images/Food/Mango.png';
 import boba from '../../images/Food/Bobba_Green.png';
 import salad from '../../images/Food/Salat.png';
