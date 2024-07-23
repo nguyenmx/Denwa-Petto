@@ -5,7 +5,7 @@ import { StyleSheet, Text, View, ScrollView, TouchableOpacity, ImageBackground, 
 import { StatusBar } from 'expo-status-bar';
 import NameScreen from './pages/main/NameScreen';
 import HowToPlay from './pages/main/HowToPlay';
-import StoryModeScreen from './pages/story/StoryModeScreen';
+// import StoryModeScreen from './pages/story/StoryModeScreen';
 import CombatModeScreen from './pages/combat/CombatModeScreen';
 import StepTracker from './pages/steps/StepTracker';
 import TestChatGPT from "./pages/story/TestChatGPT";
@@ -42,6 +42,7 @@ import Slider from '@react-native-community/slider';
 import PetProfile from './pages/main/PetProfile';
 import { useDailyReward } from './modules/DailyReward';
 import Achievements from './pages/main/Achievements';
+import ChatBot from './components/story_logic/Chatbot';
 
 //import {AppleHealthKit} from 'react-native-health';
 
@@ -94,7 +95,7 @@ export default function App() {
                 <Stack.Navigator initialRouteName="Home">
                   <Stack.Screen name="Home" component={HomeScreen} options={{ headerTransparent: true, title: '' }}/>
                   <Stack.Screen name="NameScreen" component={NameScreen} options={{ headerShown: false }}/>
-                  <Stack.Screen name="StoryMode" component={StoryModeScreen} />
+                  {/* <Stack.Screen name="StoryMode" component={StoryModeScreen} /> */}
                   <Stack.Screen name="CombatModeScreen" component={CombatModeScreen} options={{ headerShown: false }}/>
                   <Stack.Screen name="StepTracker" component={StepTracker} options={{ headerShown: false }}/>
                   <Stack.Screen name="Inventory" component={Inventory}/>
@@ -102,7 +103,8 @@ export default function App() {
                   <Stack.Screen name="TestingScreen" component={TestingScreen} options={{ headerShown: false }}/>
                   <Stack.Screen name="WinScreen" component={WinScreen} options={{ headerShown: false }}/>
                   <Stack.Screen name="LossScreen" component={LossScreen} options={{ headerShown: false }}/>
-                  <Stack.Screen name="StoryModeScreen" component={StoryModeScreen} />
+                  {/* <Stack.Screen name="StoryModeScreen" component={StoryModeScreen} options={{ headerShown: false }}/> */}
+                  <Stack.Screen name="ChatBotScreen" component={ChatBot} options={{ headerShown: false }}/>
                   <Stack.Screen name="TestChatGPT" component={TestChatGPT} options={{ headerShown: false }}/>
                   <Stack.Screen name="BattleScreen" component={BattleScreen} options={{ headerShown: false}}/>
                   <Stack.Screen name="PetHouse" component={PetHouse} options={{ headerShown: false}}/>
@@ -115,7 +117,6 @@ export default function App() {
                   <Stack.Screen name="StepsConversion" component={StepsConversion} options={{ headerShown: false}} />
                   <Stack.Screen name="FriendshipLevel" component={FriendshipLevel} options={{ headerShown: false}} />
                   <Stack.Screen name="PetProfile" component={PetProfile} options={{ headerShown: false}}/>
-
                 </Stack.Navigator>
               </NavigationContainer>
             </TasksProvider>

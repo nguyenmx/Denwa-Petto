@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#000",
     },
     chatText: {
-        fontSize: 16,
+        fontSize: 18,
         color: "#fff",
     },
     speakerIcon: {

@@ -1,18 +1,50 @@
-import {View, Text, StyleSheet, TouchableOpacity} from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, Dimensions } from "react-native";
 import axios from "axios";
 import ChatBubble from "./ChatBubble";
 import { speak, isSpeakingAsync, stop } from "expo-speech";
-import { FlatList, TextInput } from "react-native-gesture-handler";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { GEMINI_API_KEY } from "@env";
 
-const Chatbot = () => {
+const Chatbot = ({ navigation, route }) => {
+    const { currentProfile } = route.params;
+    const characterId = currentProfile.id;
     const [chat, setChat] = useState([]);
     const [userInput, setUserInput] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [isSpeaking, setIsSpeaking] = useState(false);
+    
+    // const GEMINI_API_KEY = "AIzaSyB8N1R8oJBT81ciGDqEbkgWf00qQbcpERA";
 
-    const API_KEY = "---";
+    useEffect(() => {
+        // Load messages when the component mounts
+        loadMessages();
+    }, []);
+
+    useEffect(() => {
+        // Save messages whenever they update
+        storeMessages(chat, characterId);
+    }, [chat]);
+
+    const storeMessages = async (messages, characterId) => {
+        try {
+            await AsyncStorage.setItem(`chatMessages_${characterId}`, JSON.stringify(messages));
+        } catch (error) {
+            console.error('Error storing messages:', error);
+        }
+    };
+
+    const loadMessages = async () => {
+        try {
+            const storedMessages = await AsyncStorage.getItem(`chatMessages_${characterId}`);
+            if (storedMessages) {
+                setChat(JSON.parse(storedMessages));
+            }
+        } catch (error) {
+            console.error('Error loading messages:', error);
+        }
+    };
 
     const handleUserInput = async () => {
         let updatedChat = [
@@ -28,7 +60,7 @@ const Chatbot = () => {
 
         try {
             const response = await axios.post(
-                `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`,
+                `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`,
                 {
                     contents: updatedChat,
                 }
@@ -36,23 +68,21 @@ const Chatbot = () => {
             console.log("Gemini Pro API Response:", response.data);
             
             const modelResponse = 
-            response.data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+                response.data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
 
             if (modelResponse) {
                 const updatedChatWithModel = [
                     ...updatedChat,
                     {
                         role: "model",
-                        parts: [{text: modelResponse}],
+                        parts: [{ text: modelResponse }],
                     },
                 ];
 
                 setChat(updatedChatWithModel);
                 setUserInput("");
-
             }
-        } 
-        catch (error) {
+        } catch (error) {
             console.error("Error calling Gemini Pro API", error);
             console.error("Error response:", error.response);
             setError("An error occurred. Please try again.");
@@ -72,45 +102,49 @@ const Chatbot = () => {
             }
         }
     };
-    const renderChatItem = ({item}) => (
+
+    const renderChatItem = ({ item }) => (
         <ChatBubble
-        role= {item.role}
-        text= {item.parts[0].text}
-        onSpeech= {() => handleSpeech(item.parts[0].text)}
+            role={item.role}
+            text={item.parts[0].text}
+            onSpeech={() => handleSpeech(item.parts[0].text)}
         />
     );
 
     return (
-        <View style={styles.container} >
-            <Text style= {styles.title}> Gemini Chatbot</Text>
+        <View style={styles.container}>
+            <Text style={styles.title}>{currentProfile.name}</Text>
             <FlatList
                 data={chat}
                 renderItem={renderChatItem}
                 keyExtractor={(item, index) => index.toString()}
                 contentContainerStyle={styles.chatContainer}
-                />
-                <View style={styles.inputContainer}>
-                    <TextInput
+            />
+            <View style={styles.inputContainer}>
+                <TextInput
                     style={styles.input}
                     placeholder="Type your message..."
                     placeholderTextColor="#aaa"
                     value={userInput}
                     onChangeText={setUserInput}
-                    />
-                    <TouchableOpacity style={styles.button} onPress={handleUserInput}>
-                        <Text style={styles.buttonText}>Send</Text>
-                    </TouchableOpacity>
-                    {loading && <Text style={styles.error}>{error}</Text>}
-                </View>
+                />
+                <TouchableOpacity style={styles.button} onPress={handleUserInput}>
+                    <Text style={styles.buttonText}>Send</Text>
+                </TouchableOpacity>
+            </View>
+            {loading && <Text style={styles.loading}>Loading...</Text>}
+            {error && <Text style={styles.error}>{error}</Text>}
         </View>
     );
 };
 
+const { width } = Dimensions.get('window');
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 16,
         backgroundColor: "#f8f8f8",
+        width: width
     },
     title: {
         fontSize: 24,
@@ -123,6 +157,7 @@ const styles = StyleSheet.create({
     chatContainer: {
         flexGrow: 1,
         justifyContent: 'flex-end',
+        paddingHorizontal: 16,
     },
     inputContainer: {
         flexDirection: "row",
@@ -144,18 +179,23 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: "#007AFF",
         borderRadius: 25,
+        justifyContent: "center",
+        alignItems: "center",
     },
     buttonText: {
         color: "#fff",
         textAlign: "center",
     },
     loading: {
+        color: "#333",
         marginTop: 10,
+        textAlign: "center",
     },
     error: {
         color: "red",
         marginTop: 10,
-    }
-})
+        textAlign: "center",
+    },
+});
 
 export default Chatbot;

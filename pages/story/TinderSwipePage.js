@@ -56,7 +56,7 @@ const TinderSwipePage = ({ navigation }) => {
     } else if (direction === 'right') {
         const currentProfile = profiles[currentProfileIndex];
         setSwipedProfiles([...swipedProfiles, currentProfile]);
-        navigation.navigate('StoryModeScreen', { currentProfile });
+        navigation.navigate('ChatBotScreen', { currentProfile });
 
         console.log(currentProfile.personality);
         console.log(currentProfile.name);
