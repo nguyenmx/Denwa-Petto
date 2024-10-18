@@ -4,6 +4,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StatusBar } from 'expo-status-bar';
 import { ReferenceDataContext } from '../components/ReferenceDataContext';
 import { SplashScreen } from 'expo';
+import { PanResponder } from 'react-native';
+import LeftArrow from '../images/LeftArrow.png';
+import RightArrow from '../images/RightArrow.png';
 
 const window = Dimensions.get('window');
 
@@ -20,6 +23,33 @@ const CharacterSelector = ({ navigation }) => {
     { name: 'Bird', image: require('../images/PlayableAnimals/simpleBird.gif') },
     { name: 'Squid', image: require('../images/PlayableAnimals/simpleSquid.gif') },
   ];
+
+  const panResponder = PanResponder.create({
+    onMoveShouldSetPanResponder: (evt, gestureState) => true,
+    onPanResponderRelease: (evt, gestureState) => {
+      if (gestureState.dx > 50) {
+        // Swipe right
+        handleSwipeRight();
+        console.log("swiped right");
+      } else if (gestureState.dx < -50) {
+        // Swipe left
+        console.log("swiped left");
+        handleSwipeLeft();
+      }
+    },
+  });
+
+  const handleSwipeLeft = () => {
+    // Move to the next character
+    setSelectedDuck((prevDuck) => (prevDuck + 1) % petSprites.length);
+  };
+
+  const handleSwipeRight = () => {
+    // Move to the previous character
+    setSelectedDuck((prevDuck) =>
+      prevDuck === 0 ? petSprites.length - 1 : prevDuck - 1
+    );
+  };
 
   useEffect(() => {
     async function getSelectedDuck() {
@@ -61,15 +91,28 @@ const CharacterSelector = ({ navigation }) => {
     }
   };
   
+  
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
       <View style={styles.centeredContainer}>
-        <TouchableOpacity onLongPress={handleLongPress}>
+        
+        {/* Left Arrow */}
+        <TouchableOpacity onPress={handleSwipeLeft}>
+          <Image source={LeftArrow} style={styles.arrow} />
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={handleLongPress}>
           <View style={styles.swiperContainer}>
             <Image source={petSprites[selectedDuck].image} style={styles.petImage} />
           </View>
         </TouchableOpacity>
+
+         {/* Right Arrow */}
+         <TouchableOpacity onPress={handleSwipeRight}>
+          <Image source={RightArrow} style={styles.arrow} />
+        </TouchableOpacity>
+
       </View>
       <Modal
         animationType="slide"
@@ -109,15 +152,16 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    flexDirection: 'row',
   },
   swiperContainer: {
     alignItems: 'center',
     justifyContent: 'center',
   },
   petImage: {
-    width: window.width * 0.58, 
-    height: window.width * 0.58,
-    resizeMode: 'contain',
+    width: window.width * 0.6, 
+    height: window.height * 0.3,
+    resizeMode: 'contain'
   },
   petName: {
     fontSize: 16,
@@ -161,6 +205,11 @@ const styles = StyleSheet.create({
   modalItemName: {
     fontSize: 14,
     marginTop: 5,
+  },
+  arrow: {
+    width: window.width * 0.05,
+    height: window.height * 0.05,
+    aspectRatio: 1,
   },
 });
 
