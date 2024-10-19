@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, Dimensions } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, Dimensions, ImageBackground } from "react-native";
 import axios from "axios";
 import ChatBubble from "./ChatBubble";
 import { speak, isSpeakingAsync, stop } from "expo-speech";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GEMINI_API_KEY } from "@env";
+import backgroundImage from '../../images/Backgrounds/combatModeBackground.png';
 
 const Chatbot = ({ navigation, route }) => {
     const { currentProfile } = route.params;
@@ -111,27 +112,31 @@ const Chatbot = ({ navigation, route }) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>{currentProfile.name}</Text>
-            <FlatList
-                data={chat}
-                renderItem={renderChatItem}
-                keyExtractor={(item, index) => index.toString()}
-                contentContainerStyle={styles.chatContainer}
-            />
-            <View style={styles.inputContainer}>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Type your message..."
-                    placeholderTextColor="#aaa"
-                    value={userInput}
-                    onChangeText={setUserInput}
-                />
-                <TouchableOpacity style={styles.button} onPress={handleUserInput}>
-                    <Text style={styles.buttonText}>Send</Text>
-                </TouchableOpacity>
-            </View>
-            {loading && <Text style={styles.loading}>Loading...</Text>}
-            {error && <Text style={styles.error}>{error}</Text>}
+            <ImageBackground source={backgroundImage} style={styles.background}>
+                <View style={styles.paddingContainer}>
+                    <Text style={styles.title}>{currentProfile.name}</Text>
+                    <FlatList
+                        data={chat}
+                        renderItem={renderChatItem}
+                        keyExtractor={(item, index) => index.toString()}
+                        contentContainerStyle={styles.chatContainer}
+                    />
+                    <View style={styles.inputContainer}>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Type your message..."
+                            placeholderTextColor="#aaa"
+                            value={userInput}
+                            onChangeText={setUserInput}
+                        />
+                        <TouchableOpacity style={styles.button} onPress={handleUserInput}>
+                            <Text style={styles.buttonText}>Send</Text>
+                        </TouchableOpacity>
+                    </View>
+                    {loading && <Text style={styles.loading}>Loading...</Text>}
+                    {error && <Text style={styles.error}>{error}</Text>}
+                </View>
+            </ImageBackground>
         </View>
     );
 };
@@ -140,9 +145,17 @@ const { width } = Dimensions.get('window');
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 16,
-        backgroundColor: "#f8f8f8",
         width: width
+    },
+    paddingContainer: {
+        flex: 1,
+        width: width,
+        padding: 16
+    },
+    background: {
+        flex: 1,
+        width: '100%',
+        justifyContent: 'flex-end',
     },
     title: {
         fontSize: 24,

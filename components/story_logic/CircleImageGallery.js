@@ -31,7 +31,7 @@ const { width, height } = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    width: width,
+    width: width
   },
   title: {
     textAlign: 'left',
@@ -40,11 +40,11 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     alignItems: 'center',
-    paddingVertical: 20,
+    paddingVertical: 5,
   },
   profileContainer: {
     alignItems: 'center',
-    marginHorizontal: 10,
+    marginHorizontal: 15,
   },
   imageContainer: {
     width: 80,

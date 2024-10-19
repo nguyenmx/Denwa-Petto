@@ -84,13 +84,13 @@ const TinderSwipePage = ({ navigation }) => {
       <View style={styles.container}>
         
         <View style={styles.headerContainer}>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() => navigation.goBack()} // Use navigation.goBack() to go back
             >
               <BackArrow />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
       
-          <Image source={storyModeLogo} style={styles.imageLogo} />
+          {/* <Image source={storyModeLogo} style={styles.imageLogo} /> */}
         </View>
 
         <CircleImageGallery/>
@@ -105,8 +105,18 @@ const TinderSwipePage = ({ navigation }) => {
         >
           <Animated.View style={[styles.swipeContainer, { transform: [{ translateX }] }]}>
             <View style={styles.profileContainer}>
-              <Image source={currentProfile.image} style={styles.pfpBackground} />
+               <Image source={currentProfile.image} style={styles.pfpBackground} />
+            
               <Image source={currentProfile.animalType} style={styles.duckContainer} />
+              <View style = {styles.buttonContainer}>
+                <TouchableOpacity onPress={() => animateSwipe('left')}>
+                    <Image source={swipeLeft} style={styles.swipeLeftButton} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => animateSwipe('right')}>
+                    <Image source={swipeRight} style={styles.swipeRightButton} />
+                </TouchableOpacity>
+              </View>
+
               <View style={styles.textContainer}>
               <View style={styles.nameContainer}>
                 <View style={styles.nameInfoContainer}>
@@ -135,14 +145,6 @@ const TinderSwipePage = ({ navigation }) => {
 
             </View>
 
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity onPress={() => animateSwipe('left')}>
-                  <Image source={swipeLeft} style={styles.swipeLeftButton} />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => animateSwipe('right')}>
-                  <Image source={swipeRight} style={styles.swipeRightButton} />
-                </TouchableOpacity>
-              </View>
             </View>
             
               
@@ -165,16 +167,24 @@ const styles = StyleSheet.create({
   },
   animalName: {
     fontWeight: 'bold',
-    fontSize: 22,
+    fontSize: 24,
     marginBottom: 5
   },
   swipeLeftButton: {
-    width: 70,
-    height: 70,
+    width: 80,
+    height: 80,
+    left: -110,
+    top: -30
     // marginBottom: 15,
   },
+  swipeRightButton: {
+    width: 80,
+    height: 80,
+    right: -110,
+    top: -30
+  },
   occText: {
-    fontSize: 18
+    fontSize: 20
   },
   bioText: {
     fontSize: 18,
@@ -186,23 +196,15 @@ const styles = StyleSheet.create({
     marginRight: window.width * 0.1,
   },
   textContainer: {
-    bottom: 13,
     padding: 8,
     backgroundColor: 'white', // Grey with 50% opacity
-    borderRadius: 2,
-    width: window.width * 0.88,
+    width: window.width,
     // position: 'absolute'
   },
   informationButton: {
     width: 30,
     height: 30,
     marginLeft: window.width * 0.35
-  },
-  swipeRightButton: {
-    width: 70,
-    height: 70,
-    // marginLeft: 190,
-    // marginBottom: 15,
   },
   verifyIcon: {
     width: 30,
@@ -211,16 +213,9 @@ const styles = StyleSheet.create({
     marginLeft: 8
   },
   buttonContainer: {
-
     flexDirection: 'row', // Set items horizontally
-    // alignItems: 'center',
-    // justifyContent: 'center',
     zIndex: 1, // Ensure Buttons are on top
-    // position: 'absolute',
     top: 20,
-    // left: 0,
-    // right: 0,
-    // bottom: 0,
   },
   profileContainer: {
     position: 'relative',
@@ -237,13 +232,13 @@ const styles = StyleSheet.create({
     alignItems: 'center,'
   },
   duckContainer: {
-    position: 'absolute',
-    top: 35,
+    // position: 'absolute',
     // justifyContent: 'center',
     // alignItems: 'center',
     // zIndex: 1,
-    width: 344,
-    height: 344,
+    top: 90,
+    width: 400,
+    height: 400,
   },
   nameContainer: {
     flexDirection: 'row', // Set items horizontally
@@ -270,9 +265,10 @@ const styles = StyleSheet.create({
   },
   pfpBackground:
   {
-    height: window.height * 0.45,
-    width: window.width * 0.88,
-    borderRadius: 20,
+    height: window.height * 0.67,
+    width: window.width,
+    position: 'absolute', // Position it absolutely relative to its container
+    
   },
   nameContainer: {
     flexDirection: 'row',
