@@ -6,7 +6,7 @@ import scissor from '../../images/CombatScreen/scissor.png';
 import paper from '../../images/CombatScreen/paper.png';
 import HealthBar from '../../modules/HealthBar';
 import EnemyHealthBar from '../../modules/EnemyHealthBar';
-import Animal from '../../modules/CharDuck';
+import Duck from '../../modules/CharDuck';
 import OpponentDuck from '../../modules/OpponentDuck';
 import explosion from '../../images/CombatScreen/explosion.gif';
 import BackArrow from  '../../modules/BackArrow';
@@ -294,7 +294,7 @@ const handlePress = (move) => {
             {playerWarning && <Image source={warningIcon} style={styles.playerWarningIcon}></Image>}
           </View>
           <View style={styles.duckContainer}>
-          <CharacterSelector> </CharacterSelector>
+          <Duck duckType={selectedDuck}/>
           {/* <Animal duckType={selectedDuck}></Animal> */}
           {playerMoveBubble && <Image source={getImageForMove(playerMove)} style={styles.bubbleImageP} />}
           {playerAttack && <Image source={attack} style={styles.attackMove}></Image>}
