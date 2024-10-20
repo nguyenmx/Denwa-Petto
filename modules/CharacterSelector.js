@@ -7,37 +7,52 @@ import { SplashScreen } from 'expo';
 import { PanResponder } from 'react-native';
 import LeftArrow from '../images/LeftArrow.png';
 import RightArrow from '../images/RightArrow.png';
+import { Audio } from 'expo-av';
 
 const window = Dimensions.get('window');
 
 const CharacterSelector = ({ navigation }) => {
   const { selectedDuck, setSelectedDuck } = useContext(ReferenceDataContext);
   const [modalVisible, setModalVisible] = useState(false);
+  const [sound, setSound] = useState(null); // State to keep track of the sound object
 
   const petSprites = [
-    { name: 'Wave Duck', image: require('../images/PlayableAnimals/duckWave.gif') },
-    { name: 'Capybara', image: require('../images/PlayableAnimals/capyKnife.gif') },
-    { name: 'Rizz Duck', image: require('../images/PlayableAnimals/duckRizz.gif') },
-    { name: 'Coffee Duck', image: require('../images/PlayableAnimals/duckCoffee.gif') },
-    { name: 'Banana Duck', image: require('../images/PlayableAnimals/ducky.gif') },
-    { name: 'Bird', image: require('../images/PlayableAnimals/simpleBird.gif') },
-    { name: 'Squid', image: require('../images/PlayableAnimals/simpleSquid.gif') },
+    { name: 'Quacky', image: require('../images/PlayableAnimals/duckWave.gif'), cry: require('../assets/sfx/duck-default.wav') },
+    { name: 'Stabbo', image: require('../images/PlayableAnimals/capyKnife.gif'), cry: require('../assets/sfx/capybara-default.wav') },
+    { name: 'Rizzy', image: require('../images/PlayableAnimals/duckRizz.gif'), cry: require('../assets/sfx/duck-default.wav')},
+    { name: 'Sippy', image: require('../images/PlayableAnimals/duckCoffee.gif'), cry: require('../assets/sfx/duck-default.wav')},
+    { name: 'Ducky', image: require('../images/PlayableAnimals/ducky.gif'), cry: require('../assets/sfx/duck-default.wav')},
+    { name: 'CrowBro', image: require('../images/PlayableAnimals/simpleBird.gif'), cry: require('../assets/sfx/crowbro/crow-default.wav')},
+    { name: 'Squiddy', image: require('../images/PlayableAnimals/simpleSquid.gif'), cry: require('../assets/sfx/squiddy/octo.mp3') },
   ];
 
-  const panResponder = PanResponder.create({
-    onMoveShouldSetPanResponder: (evt, gestureState) => true,
-    onPanResponderRelease: (evt, gestureState) => {
-      if (gestureState.dx > 50) {
-        // Swipe right
-        handleSwipeRight();
-        console.log("swiped right");
-      } else if (gestureState.dx < -50) {
-        // Swipe left
-        console.log("swiped left");
-        handleSwipeLeft();
+    // Play sound when the selected animal changes
+    useEffect(() => {
+      async function playSound() {
+        // Stop any previously playing sound
+        if (sound) {
+          await sound.unloadAsync();
+          setSound(null);
+        }
+          
+        // Check if the selected animal has a cry
+        const selectedPet = petSprites[selectedDuck];
+        if (selectedPet.cry) {
+          const { sound: newSound } = await Audio.Sound.createAsync(selectedPet.cry);
+          setSound(newSound);
+          await newSound.playAsync(); // Play the sound
+        }
       }
-    },
-  });
+  
+      playSound(); // Call the function to play the sound on animal change
+  
+      return () => {
+        // Cleanup: unload the sound when the component unmounts or when the effect is re-triggered
+        if (sound) {
+          sound.unloadAsync();
+        }
+      };
+    }, [selectedDuck]); // Trigger the effect when the selectedDuck changes
 
   const handleSwipeLeft = () => {
     // Move to the next character
@@ -45,14 +60,13 @@ const CharacterSelector = ({ navigation }) => {
   };
 
   const handleSwipeRight = () => {
-    // Move to the previous character
-    setSelectedDuck((prevDuck) =>
-      prevDuck === 0 ? petSprites.length - 1 : prevDuck - 1
+    setSelectedDuck((prevDuck) => prevDuck === 0 ? petSprites.length - 1 : prevDuck - 1
     );
   };
 
   useEffect(() => {
     async function getSelectedDuck() {
+
       try {
         const value = await AsyncStorage.getItem('selectedDuck');
         if (value !== null) {

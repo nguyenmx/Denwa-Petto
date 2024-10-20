@@ -13,43 +13,9 @@ const window = Dimensions.get('window');
 
 const TimerComponent = ({ navigation }) => {
 
-  // const [soundLoaded, setSoundLoaded] = useState(false);
-  // const soundObject = useRef(new Audio.Sound()).current;
-
-  // useEffect(() => {
-  //   const handlePlay = async () => {
-  //     if (soundLoaded) {
-  //       try {
-  //         await soundObject.replayAsync();
-  //       } catch (error) {
-  //         console.error('Error replaying the sound:', error);
-  //       }
-  //     } else {
-  //       try {
-  //         await soundObject.loadAsync(require('../../assets/sfx/steps.wav'),{ shouldPlay: true, isLooping: true });
-  //         await soundObject.playAsync();
-  //         setSoundLoaded(true);
-  //       } catch (error) {
-  //         console.error('Error loading or playing the sound:', error);
-  //       }
-  //     }
-  //   };
-
-  //   handlePlay();
-
-  //   return () => {
-  //     if (soundLoaded) {
-  //       soundObject.unloadAsync();
-  //     }
-  //   };
-  // }, [soundLoaded]);
-
-
   const { soundLoaded } = useSound(require('../../assets/sfx/steps.wav'),{ shouldPlay: true, isLooping: true });
-
   const backgroundImage = require('../../images/Backgrounds/clouds.png');
   const { steps, setSteps } = useContext(ReferenceDataContext);
-
   const { time, setTime } = useContext(ReferenceDataContext);
 
 

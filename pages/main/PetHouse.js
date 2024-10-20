@@ -32,6 +32,7 @@ import { TapProvider } from '../../components/main_game_logic/TapContext';
 // import { TouchableWithoutFeedback } from 'react-native-web';
 import zzz from '../../images/PetHouse/zzz.gif'
 import { useReferenceData } from '../../components/ReferenceDataContext';
+import { duckData } from '../../modules/CharDuck'; // Adjust path as needed
 
 // Ignore specific warnings by adding the warning message to the ignored list
 LogBox.ignoreLogs(['Sending `onAnimatedValueUpdate` with no listeners registered.']);
@@ -280,7 +281,7 @@ const PetHouse = () => {
   };
 
   const healthPosition = {
-    top: isLandscape ? -85 : window.height * -0.06, 
+    top: isLandscape ? -85 : window.height * -0.045, 
     left: isLandscape ? -250 : window.width * -0.08
   };
 
@@ -388,7 +389,7 @@ useEffect(() => {
             <View style = {styles.profileContainer}>
             <Image source={profileImagePath} style={styles.profileIcon} />
               <View style={styles.nameContainer}>
-                <Text style={styles.nameText}>{name}</Text>
+                <Text style={styles.nameText}>{duckData[selectedDuck].name}</Text>
               </View>
             </View>
             </TouchableWithoutFeedback>
@@ -477,7 +478,7 @@ const styles = StyleSheet.create({
     marginTop: -70
   },
   nameContainer: {
-    width: 175,
+    width: 180,
     height: 60, 
     alignItems: 'center',
     justifyContent: 'center',
@@ -502,18 +503,18 @@ const styles = StyleSheet.create({
   },
   nameText: {
     fontFamily: 'NiceTango-K7XYo',
-    fontSize: 32,
+    fontSize: 38,
     color: 'white',
     textShadowColor: 'rgba(0, 0, 0, 0.8)',
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 3,
-    zIndex:999
+    zIndex:999,
   },
   profileIcon: {
-    width: 90,
-    height: 90,
+    width: 80,
+    height: 80,
     top: -10,
-    left: 40,
+    left: 25,
     zIndex: 2
   },
   profileContainer: {
