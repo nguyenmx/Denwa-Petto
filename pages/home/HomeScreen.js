@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { View, Text, TextInput, Button, TouchableOpacity, StyleSheet, Image, ImageBackground, KeyboardAvoidingView, Dimensions} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import CharacterSelector from '../../modules/CharacterSelector'; // Adjust path as needed
 import { useDailyReward } from '../../modules/DailyReward';
@@ -14,6 +14,33 @@ import { Audio } from 'expo-av';
 
 const window = Dimensions.get('window');
 const HomeScreen = () => {
+    useFocusEffect(
+        React.useCallback(() => {
+          // The screen is focused, handle the sound here
+          const soundObject = new Audio.Sound();
+          let isActive = true;
+    
+          const playSound = async () => {
+            if (isActive) {
+              try {
+                await soundObject.loadAsync(require('../../assets/music/home.mp3'), { shouldPlay: true, isLooping: true });
+                await soundObject.playAsync();
+              } catch (error) {
+                console.error('Error playing the sound:', error);
+              }
+            }
+          };
+    
+          playSound();
+    
+          return () => {
+            // Unload sound when the screen is blurred (navigated away)
+            isActive = false;
+            soundObject.unloadAsync();
+          };
+        }, [])
+      );
+
     // const { soundLoaded } = useSound(require('../../assets/sfx/steps.wav'),{ shouldPlay: true, isLooping: true });
     const navigation = useNavigation();
     const { handleLogin } = useDailyReward(); // Destructure the handleLogin function from the hook
