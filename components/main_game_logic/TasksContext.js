@@ -5,6 +5,7 @@ import coin from '../../images/PetHouse/Portrait/coin.png';
 import balloons from '../../images/balloons.gif';
 import sparkles from '../../images/sparkles.gif';
 import {Audio} from 'expo-av';
+import { playSFX } from '../../modules/playSFX';
 
 export const TasksContext = createContext({
   friendshipLevel: 0,
@@ -64,25 +65,7 @@ export const TasksProvider = ({ children }) => {
         setCompletedTaskId(taskId); // Set completed task ID
         setShowModel(true);
         incrementFriendship();
-        
-        //Play Sound Effect
-        this.soundObject = new Audio.Sound();
-        if (this.soundObject._loaded) {
-            try {
-      
-              await this.soundObject.replayAsync();
-            } catch (error) {
-              console.error('Error replaying the sound:', error);
-            }
-          } else {
-      
-            try {
-              await this.soundObject.loadAsync(require('../../assets/sfx/trumpet.mp3'));
-              await this.soundObject.playAsync();
-            } catch (error) {
-              console.error('Error loading or playing the sound:', error);
-            }
-          }
+        await playSFX(require('../../assets/sfx/trumpet.mp3'));
       }
     } else {
       console.log("You can only complete this task after the previous one is completed.");

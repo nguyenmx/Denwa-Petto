@@ -29,6 +29,7 @@ export const duckData = {
     color:'rgba(246, 248, 132, 1)',
     fun_fact: 'male ducks, called drakes, often have quieter, raspy voices compared to the loud quacks of female ducks.' , 
     imageSource: require('../images/PlayableAnimals/duckWave.gif'),
+    cry: require('../assets/sfx/duck-default.wav')
   },
   1: {
     name: 'Stabbo',
@@ -41,6 +42,7 @@ export const duckData = {
     color:'rgba(255, 190, 162, 1)',
     fun_fact: 'He has a knife...' , 
     imageSource: require('../images/PlayableAnimals/capyKnife.gif'),
+    cry: require('../assets/sfx/capybara-default.wav')
   },
   2: {
     name: 'Rizzy',
@@ -52,8 +54,8 @@ export const duckData = {
     hate: require('../images/Food/CannedFood_Fish.png'),
     color:'rgba(255, 169, 206, 1)',
     fun_fact: 'Courtship among ducks can be quite elaborate. Male ducks often perform intricate displays to attract females, including head bobbing, tail wagging, and even aerial acrobatics.' , 
-
     imageSource: require('../images/PlayableAnimals/duckRizz.gif'),
+    cry: require('../assets/sfx/duck-default.wav')
   },
   3: {
     name: 'Sippy',
@@ -65,8 +67,8 @@ export const duckData = {
     hate: require('../images/Food/Carton_Blue.png'),
     color:'rgba(247, 192, 194, 1)',
     fun_fact: 'While some ducks are dabblers, others are expert divers. Diving ducks, such as the common goldeneye or the tufted duck, can dive to considerable depths in search of food, sometimes reaching depths of over 20 feet.' , 
-
     imageSource: require('../images/PlayableAnimals/duckCoffee.gif'),
+    cry: require('../assets/sfx/duck-default.wav')
   },
   4: {
     name: 'Ducky',
@@ -78,8 +80,8 @@ export const duckData = {
     hate: require('../images/Food/Shrimp.png'),
     color:'rgba(215, 239, 244, 1)',
     fun_fact: 'Ducks have special feathers that are waterproof. These feathers are coated with an oily substance that repels water' , 
-
     imageSource: require('../images/PlayableAnimals/ducky.gif'),
+    cry: require('../assets/sfx/duck-default.wav')
   },
   5: {
     name: 'CrowBro',
@@ -91,8 +93,8 @@ export const duckData = {
     hate: require('../images/Food/Apple.png'),
     color:'rgba(215, 200, 249, 1)',
     fun_fact: 'Crows are highly adaptable birds and thrive in urban environments. They take advantage of human-made structures and food sources.' , 
-
     imageSource: require('../images/PlayableAnimals/simpleBird.gif'),
+    cry: require('../assets/sfx/crowbro/crow-default.wav')
   },
   6: {
     name: 'Squiddy',
@@ -104,8 +106,8 @@ export const duckData = {
     hate: require('../images/Food/Burger.png'),
     color:'rgba(255, 193, 193, 1)',
     fun_fact: 'Most squid species have relatively short lifespans, living for only one to two years. Some smaller species may live for only a few months.' , 
-
     imageSource: require('../images/PlayableAnimals/simpleSquid.gif'),
+    cry: require('../assets/sfx/squiddy/octo.mp3')
   },
 };
 

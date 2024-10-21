@@ -36,6 +36,7 @@ const SpriteAnimation = ({
   const { completeTask } = useTasks();
   const { playerHealth, setPlayerHealth } = useContext(ReferenceDataContext);
   const { isNight } = useContext(ReferenceDataContext);
+  const { selectedDuck} = useContext(ReferenceDataContext);
 
   const animations = {
     idle: idleFrames,
@@ -45,8 +46,6 @@ const SpriteAnimation = ({
     sleep: sleepFrames
   };
 
-
-  const { selectedDuck } = useContext(ReferenceDataContext);
 
   const playAnimation = (frames, loop = false) => {
     const intervalId = setInterval(() => {
@@ -65,30 +64,30 @@ const SpriteAnimation = ({
     };
   };
 
-  const switchToNextAnimation = () => {
+  // const switchToNextAnimation = () => {
 
-    setAnimationType((prevType) => {
-      const randomAnimation = Math.random(); // Generate a random number between 0 and 1
+  //   setAnimationType((prevType) => {
+  //     const randomAnimation = Math.random(); // Generate a random number between 0 and 1
   
-      // Define the probability thresholds for each animation
-      const walkThreshold = 0.5; // 50% probability for 'walk'
-      const runThreshold = 0.5; // 50% probability for 'run'
+  //     // Define the probability thresholds for each animation
+  //     const walkThreshold = 0.5; // 50% probability for 'walk'
+  //     const runThreshold = 0.5; // 50% probability for 'run'
   
-      // Determine which animation to switch to based on the random number
-      let nextAnimation;
-      if (randomAnimation < walkThreshold) {
-        nextAnimation = 'walk';
-      } else if (randomAnimation < runThreshold) {
-        nextAnimation = 'celebrate';
-      } else {
-        nextAnimation = 'idle'; // Fallback to 'idle' animation
-      }
+  //     // Determine which animation to switch to based on the random number
+  //     let nextAnimation;
+  //     if (randomAnimation < walkThreshold) {
+  //       nextAnimation = 'walk';
+  //     } else if (randomAnimation < runThreshold) {
+  //       nextAnimation = 'celebrate';
+  //     } else {
+  //       nextAnimation = 'idle'; // Fallback to 'idle' animation
+  //     }
   
-      setIsPlaying(true); // Start playing the animation
+  //     setIsPlaying(true); // Start playing the animation
   
-      return nextAnimation;
-    });
-  };
+  //     return nextAnimation;
+  //   });
+  // };
   
 
   const handleSpritePress = () => {

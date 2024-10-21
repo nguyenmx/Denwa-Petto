@@ -7,10 +7,8 @@ import { useDailyReward } from '../../modules/DailyReward';
 import Title from '../../images/Logos/Denwa_Petto.png'; // Update to require
 import OrangeButton from '../../images/OrangeBttn2.png'; // Update to require
 import backgroundImage from '../../images/Backgrounds/background.gif'; // Update to require
-import { useSound } from '../../modules/useSound';
 import { Audio } from 'expo-av';
-
-
+import { playSFX } from '../../modules/playSFX';
 
 const window = Dimensions.get('window');
 const HomeScreen = () => {
@@ -52,25 +50,7 @@ const HomeScreen = () => {
 
 
     const handlePress = async (route) => {
-    
-    this.soundObject = new Audio.Sound();
-    if (this.soundObject._loaded) {
-        try {
-  
-          await this.soundObject.replayAsync();
-        } catch (error) {
-          console.error('Error replaying the sound:', error);
-        }
-      } else {
-  
-        try {
-          await this.soundObject.loadAsync(require('../../assets/sfx/button-pressed.mp3'));
-          await this.soundObject.playAsync();
-        } catch (error) {
-          console.error('Error loading or playing the sound:', error);
-        }
-      }
-
+        await playSFX(require('../../assets/sfx/button-pressed.mp3'));
         navigation.navigate(route); // Then navigate to the specified route
     };
 

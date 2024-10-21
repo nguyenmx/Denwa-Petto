@@ -44,7 +44,6 @@ import PetProfile from './pages/main/PetProfile';
 import { useDailyReward } from './modules/DailyReward';
 import Achievements from './pages/main/Achievements';
 import ChatBot from './components/story_logic/Chatbot';
-import { useSound } from './modules/useSound';
 
 //import {AppleHealthKit} from 'react-native-health';
 

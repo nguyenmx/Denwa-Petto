@@ -2,6 +2,9 @@ import React, { createContext, useContext, useState, useRef, useEffect } from 'r
 import { PanResponder, Image, TouchableOpacity } from 'react-native';
 import hand from '../../images/hand.png';
 import { useWindowDimensions, Dimensions } from 'react-native';
+// import { duckData } from '../../modules/CharDuck'; // Adjust path as needed
+// import { ReferenceDataContext } from '../../components/ReferenceDataContext';
+import { playSFX } from '../../modules/playSFX';
 
 const TapContext = createContext();
 
@@ -21,8 +24,8 @@ export const TapProvider = ({ children}) => {
   const swipeTimeout = useRef(null);
   const [handPosition, setHandPosition] = useState({ x: 0, y: 0 });
   const [showHandImage, setShowHandImage] = useState(false);
-
-
+  // const {selectedDuck} = useContext(ReferenceDataContext);
+  
   useEffect(() => {
     if (showHandImage) {
       const timeoutId = setTimeout(() => {
@@ -33,7 +36,13 @@ export const TapProvider = ({ children}) => {
     }
   }, [showHandImage]);
 
+  const rubNoise = async () => {
+    await playSFX(require('../../assets/sfx/ac-rub.mp3'));
+    console.log('now play rubbing noise');
+  }
+
   const handleTap = () => {
+    playSFX(require('../../assets/sfx/tap-default.wav'));
     setTapCount((prevCount) => prevCount + 1);
     if (tapCount >= tapThreshold) {
       console.log('You are tapping too much on the pet!');
@@ -52,6 +61,7 @@ export const TapProvider = ({ children}) => {
     }
   
     setShowHandImage(true);
+    // playSFX(require('../../assets/sfx/ac-rub.mp3'));
   
     // Update hand position
     setHandPosition({ x: gestureState.moveX, y: gestureState.moveY });
@@ -66,7 +76,10 @@ export const TapProvider = ({ children}) => {
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
-      onPanResponderMove: handleSwipe,
+      onPanResponderGrant: () => {
+        rubNoise();  // Start playing the rubbing sound
+      },
+      onPanResponderMove: () => handleSwipe,
       onPanResponderRelease: () => {
       setShowHandImage(false);
       },
