@@ -10,6 +10,7 @@ import iButton from '../../images/TinderPage/i-button.png';
 import BackArrow from '../../modules/BackArrow';
 import verify from '../../images/TinderPage/verify.png';
 import CircleImageGallery from '../../components/story_logic/CircleImageGallery';
+import { playSFX } from '../../modules/playSFX';
 
 const window = Dimensions.get('window');
 
@@ -46,6 +47,7 @@ const TinderSwipePage = ({ navigation }) => {
 
   const animateSwipe = (direction) => {
     if (direction === 'left') {
+      playSFX(require('../../assets/sfx/ac/ac-resignation.mp3'));
       Animated.timing(translateX, {
         toValue: -window.width,
         duration: 300,
@@ -55,6 +57,7 @@ const TinderSwipePage = ({ navigation }) => {
         translateX.setValue(0);
       });
     } else if (direction === 'right') {
+        playSFX(require('../../assets/sfx/ac/ac-amazed.mp3'));
         const currentProfile = profiles[currentProfileIndex];
         setSwipedProfiles([...swipedProfiles, currentProfile]);
         navigation.navigate('ChatBotScreen', { currentProfile });

@@ -96,7 +96,7 @@ const SpriteAnimation = ({
       decreaseHealth();
       setIsDecreased(true);
       setShowAngy(true);
-      playSFX(require('../assets/sfx/ac-resignation.mp3')),
+      playSFX(require('../assets/sfx/ac/ac-resignation.mp3')),
       setTimeout(() => {
         setShowAngy(false);
       }, 350);

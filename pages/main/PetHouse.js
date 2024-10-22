@@ -58,7 +58,8 @@ const PetHouse = () => {
   const { playerHealth, setPlayerHealth } = useContext(ReferenceDataContext);
   const [health, setHealth] = useState(100);
   const { setMood } = useReferenceData();
-
+  const [secondaryMusicPlaying, setSecondaryMusicPlaying] = useState(false);
+  const [nightMusicPlaying, setNightMusicPlaying] = useState(false);
   const profileImages = {
     0: p3,//wave
     1: p1, //Capy
@@ -82,8 +83,10 @@ const PetHouse = () => {
   }, []); 
 
   const toggleDayNight = () => {
+    playNightMusic();
     setIsNight(!isNight);
     completeTask(4);
+
   };
 
   const backgroundImageSource = isNight 
@@ -151,7 +154,7 @@ const PetHouse = () => {
     );
     setSound(sound);
 
-    console.log('Playing Sound');
+    // console.log('Playing Sound');
     sound.playAsync({ isLooping: true });
     sound.setVolumeAsync(volume);
   }
@@ -163,10 +166,24 @@ const PetHouse = () => {
     );
     setSound(sound);
 
-    console.log('Playing Sound');
+    // console.log('Playing Sound');
     sound.playAsync({ isLooping: false });
     sound.setVolumeAsync(volume);
   }
+
+  async function playNightMusic() {
+    console.log('Loading Sound');
+    const { sound } = await Audio.Sound.createAsync(
+      require('../../assets/music/night-time.mp3')
+    );
+    setSound(sound);
+
+    // console.log('Playing Sound');
+    sound.playAsync({ isLooping: true });
+    sound.setVolumeAsync(volume);
+  }
+
+  
   const navigation = useNavigation(); // Initialize the navigation hook
 
   useEffect(() => {
@@ -338,9 +355,6 @@ const PetHouse = () => {
     }
   };
 
-  
-// State variable to track if secondary music is playing
-const [secondaryMusicPlaying, setSecondaryMusicPlaying] = useState(false);
 
 // Play main bgm when the component mounts
 useEffect(() => {

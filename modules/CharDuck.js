@@ -260,7 +260,7 @@ const Duck = ({ duckType, Optional: customStyle, decreaseHealth, increaseHealth,
           setShowAngy(false);
         }, 400);
         decreaseHealth();
-        playSFX(require('../assets/sfx/ac-resignation.mp3'));
+        playSFX(require('../assets/sfx/ac/ac-resignation.mp3'));
       }
       timerRef.current = setInterval(() => {
         setPanningDuration(prevDuration => prevDuration + 1000);
