@@ -13,6 +13,7 @@ import girl from '../images/ProfilePage/female-symbol.png';
 import boy from '../images/male.png'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import HealthBar from './HealthBar';
+import { playSFX } from '../modules/playSFX';
 
 const window = Dimensions.get('window');
 
@@ -259,6 +260,7 @@ const Duck = ({ duckType, Optional: customStyle, decreaseHealth, increaseHealth,
           setShowAngy(false);
         }, 400);
         decreaseHealth();
+        playSFX(require('../assets/sfx/ac-resignation.mp3'));
       }
       timerRef.current = setInterval(() => {
         setPanningDuration(prevDuration => prevDuration + 1000);

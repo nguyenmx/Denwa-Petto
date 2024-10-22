@@ -8,6 +8,7 @@ import HG from '../images/HG.gif'; // Import HG.gif image
 import { useTasks } from '../components/main_game_logic/TasksContext';
 import thought_fight from '../images/cartoon-thought_fight.png';
 import thought_story from '../images/cartoon-thought_story.png';
+import { playSFX } from '../modules/playSFX';
 
 const window = Dimensions.get('window');
 
@@ -95,6 +96,7 @@ const SpriteAnimation = ({
       decreaseHealth();
       setIsDecreased(true);
       setShowAngy(true);
+      playSFX(require('../assets/sfx/ac-resignation.mp3')),
       setTimeout(() => {
         setShowAngy(false);
       }, 350);
@@ -159,19 +161,20 @@ const SpriteAnimation = ({
     onStartShouldSetPanResponder: () => true,
 
     onPanResponderGrant: () => {
-      console.log("PanResponder granted");
+      // console.log("PanResponder granted");
+      // playSFX(require('../assets/sfx/ac-rub.mp3'));
       timerRef.current = setInterval(() => {
         setPanningDuration(prevDuration => prevDuration + 1000);
       }, 1000);
     },
 
     onPanResponderRelease: () => {
-      console.log("PanResponder released");
+      // console.log("PanResponder released");
       handleSpritePress();
       setInteraction(false);
       clearInterval(timerRef.current);
       setPanningDuration(0);
-
+      
       if (panningDuration >= 4000) {
         console.log("You have played with the pet for 5 seconds.");
         setIsPettingLongEnough(true);
@@ -215,6 +218,7 @@ const SpriteAnimation = ({
     }
     if (panningDuration >= 4000 && !isCelebrating && !isHGShown) {
       setAnimationType('celebrate');
+      playSFX(require('../assets/sfx/squiddy/happy-cry.wav'));
       setIsCelebrating(true);
       setIsHGShown(true); // Set isHGShown to true to prevent showing HG.gif again
       // Stop celebrating after 2 seconds

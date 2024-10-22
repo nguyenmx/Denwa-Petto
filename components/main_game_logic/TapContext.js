@@ -2,8 +2,7 @@ import React, { createContext, useContext, useState, useRef, useEffect } from 'r
 import { PanResponder, Image, TouchableOpacity } from 'react-native';
 import hand from '../../images/hand.png';
 import { useWindowDimensions, Dimensions } from 'react-native';
-// import { duckData } from '../../modules/CharDuck'; // Adjust path as needed
-// import { ReferenceDataContext } from '../../components/ReferenceDataContext';
+import { ReferenceDataContext } from '../../components/ReferenceDataContext';
 import { playSFX } from '../../modules/playSFX';
 
 const TapContext = createContext();
@@ -24,8 +23,18 @@ export const TapProvider = ({ children}) => {
   const swipeTimeout = useRef(null);
   const [handPosition, setHandPosition] = useState({ x: 0, y: 0 });
   const [showHandImage, setShowHandImage] = useState(false);
-  // const {selectedDuck} = useContext(ReferenceDataContext);
-  
+  const {selectedDuck} = useContext(ReferenceDataContext);
+  const petSprites = [
+    { name: 'Quacky', image: require('../../images/PlayableAnimals/duckWave.gif'), cry: require('../../assets/sfx/duck-default.wav') },
+    { name: 'Stabbo', image: require('../../images/PlayableAnimals/capyKnife.gif'), cry: require('../../assets/sfx/capybara-default.wav') },
+    { name: 'Rizzy', image: require('../../images/PlayableAnimals/duckRizz.gif'), cry: require('../../assets/sfx/duck-default.wav')},
+    { name: 'Sippy', image: require('../../images/PlayableAnimals/duckCoffee.gif'), cry: require('../../assets/sfx/duck-default.wav')},
+    { name: 'Ducky', image: require('../../images/PlayableAnimals/ducky.gif'), cry: require('../../assets/sfx/duck-default.wav')},
+    { name: 'CrowBro', image: require('../../images/PlayableAnimals/simpleBird.gif'), cry: require('../../assets/sfx/crowbro/crow-default.wav')},
+    { name: 'Squiddy', image: require('../../images/PlayableAnimals/simpleSquid.gif'), cry: require('../../assets/sfx/squiddy/octo.mp3') },
+  ];
+  const selectedPet = petSprites[selectedDuck];
+
   useEffect(() => {
     if (showHandImage) {
       const timeoutId = setTimeout(() => {
@@ -36,16 +45,16 @@ export const TapProvider = ({ children}) => {
     }
   }, [showHandImage]);
 
-  const rubNoise = async () => {
-    await playSFX(require('../../assets/sfx/ac-rub.mp3'));
-    console.log('now play rubbing noise');
-  }
+  // const rubNoise = async () => {
+  //   await playSFX(require('../../assets/sfx/ac-rub.mp3'));
+  //   console.log('now play rubbing noise');
+  // }
 
   const handleTap = () => {
-    playSFX(require('../../assets/sfx/tap-default.wav'));
+    playSFX(selectedPet.cry);
     setTapCount((prevCount) => prevCount + 1);
     if (tapCount >= tapThreshold) {
-      console.log('You are tapping too much on the pet!');
+      // console.log('You are tapping too much on the pet!');
       setTapCount(0);
       return true;
     } 
@@ -76,9 +85,9 @@ export const TapProvider = ({ children}) => {
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
-      onPanResponderGrant: () => {
-        rubNoise();  // Start playing the rubbing sound
-      },
+      // onPanResponderGrant: () => {
+      //   rubNoise();  // Start playing the rubbing sound
+      // },
       onPanResponderMove: () => handleSwipe,
       onPanResponderRelease: () => {
       setShowHandImage(false);
