@@ -33,6 +33,7 @@ import { TapProvider } from '../../components/main_game_logic/TapContext';
 import zzz from '../../images/PetHouse/zzz.gif'
 import { useReferenceData } from '../../components/ReferenceDataContext';
 import { duckData } from '../../modules/CharDuck'; // Adjust path as needed
+import { playSFX } from '../../modules/playSFX';
 
 // Ignore specific warnings by adding the warning message to the ignored list
 LogBox.ignoreLogs(['Sending `onAnimatedValueUpdate` with no listeners registered.']);
@@ -49,6 +50,7 @@ const PetHouse = () => {
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const maxHealth = 100;
   const { isNight, setIsNight } = useContext(ReferenceDataContext);
+  const { isDay, setIsDay } = useContext(ReferenceDataContext);
   const [animationLoaded, setAnimationLoaded] = useState(false);
   const playerHealthRef = useRef(null);
   const [isVisible, setIsVisible] = useState(true);
@@ -82,11 +84,15 @@ const PetHouse = () => {
     };
   }, []); 
 
-  const toggleDayNight = () => {
-    playNightMusic();
+  const toggleDayNight = () => {;
+    if (!isNight) {
+      playNightMusic();
+      completeTask(4);
+    } else {
+      playSound()
+    }
+    playSFX(require('../../assets/sfx/light-switch.mp3'));
     setIsNight(!isNight);
-    completeTask(4);
-
   };
 
   const backgroundImageSource = isNight 
@@ -101,30 +107,14 @@ const PetHouse = () => {
   const decreaseHealth = () => {
     if (healthBarRef.current) {
       healthBarRef.current.decreaseHealth();
-      //console.log(healthBarRef.current.getHealth());
     }
   };
-
-  // const decreaseHealthBy = (amount) => {
-  //   if (healthBarRef.current) {
-  //     healthBarRef.current.decreaseHealth_2(amount);
-  //   }
-  // };
 
   const increaseHealth = () => {
     if (healthBarRef.current) {
       healthBarRef.current.increaseHealth();
-      //console.log(healthBarRef.current.getHealth());
     }
   };
-
-  // const getHealth = () => {
-  //   if (healthBarRef.current) {
-  //     healthBarRef.current.getHealth();
-  //     console.log(healthBarRef.current.getHealth());
-  //   }
-  //   console.log('getHealth() is working');
-  // };
 
     // Define keywords to highlight
     const keywords = ['feed', 'favorite', 'play', 'combat', 'chill'];
@@ -147,40 +137,45 @@ const PetHouse = () => {
       }
     }, [currentTaskIndex, tasks]);
 
+    LogBox.ignoreLogs(['Possible unhandled promise rejection']); // Replace with the exact warning message
+
   async function playSound() {
     console.log('Loading Sound');
     const { sound } = await Audio.Sound.createAsync(
       require('../../assets/music/Main_bgm.wav')
     );
     setSound(sound);
-
-    // console.log('Playing Sound');
-    sound.playAsync({ isLooping: true });
-    sound.setVolumeAsync(volume);
+  
+    // Ensure the sound loops
+    await sound.setIsLoopingAsync(true);
+  
+    // Set the volume
+    await sound.setVolumeAsync(volume);
+  
+    // Start playing the sound
+    await sound.playAsync();
   }
 
-  async function playSound2() {
-    console.log('Loading Sound');
+  async function playDeadMusic() {
     const { sound } = await Audio.Sound.createAsync(
       require('../../assets/sfx/dying.wav')
     );
     setSound(sound);
-
-    // console.log('Playing Sound');
-    sound.playAsync({ isLooping: false });
-    sound.setVolumeAsync(volume);
+    await sound.setIsLoopingAsync(true);
+    await sound.setVolumeAsync(volume);
+    await sound.playAsync();
   }
 
   async function playNightMusic() {
-    console.log('Loading Sound');
     const { sound } = await Audio.Sound.createAsync(
       require('../../assets/music/night-time.mp3')
     );
     setSound(sound);
-
-    // console.log('Playing Sound');
-    sound.playAsync({ isLooping: true });
-    sound.setVolumeAsync(volume);
+    
+    // Set looping and play the sound
+    await sound.setIsLoopingAsync(true); // Ensure the sound loops
+    await sound.setVolumeAsync(volume);  // Set the volume before playing
+    await sound.playAsync(); // Start playing the sound
   }
 
   
@@ -225,19 +220,20 @@ const PetHouse = () => {
     };
   }, []);
 
-  const handleImagePress = () => {
-    setIsImagePressed(true); 
-    navigation.navigate('CombatModeScreen');
-  };
+  // const handleImagePress = () => {
+  //   setIsImagePressed(true); 
+  //   navigation.navigate('CombatModeScreen');
+  // };
 
-  const onVolumeChange = (value) => {
-    if (sound) {
-      sound.setVolumeAsync(value);
-    }
-    setVolume(value);
-  };
+  // const onVolumeChange = (value) => {
+  //   if (sound) {
+  //     sound.setVolumeAsync(value);
+  //   }
+  //   setVolume(value);
+  // };
 
   const navigateToShop = () => {
+    playSFX(require('../../assets/sfx/doorbell.wav'));
     navigation.navigate('Shop');
   };
 
@@ -249,9 +245,65 @@ const PetHouse = () => {
     navigation.navigate('ProfilePage', { playSound: playSound });
   };
   
+  useEffect(() => {
+    // Set up an effect to move to the next task when the current one is completed
+    if (currentTaskIndex !== null && tasks[currentTaskIndex].completed) {
+      // Find the index of the next incomplete task
+      const nextIncompleteTaskIndex = tasks.findIndex(task => !task.completed);
   
-  const isLandscape = windowDimensions.width > windowDimensions.height;
+      // Move to the next incomplete task index if found
+      if (nextIncompleteTaskIndex !== -1) {
+        setCurrentTaskIndex(nextIncompleteTaskIndex);
+      }
+    }
+  }, [currentTaskIndex, tasks]);
+  
 
+useEffect(() => {
+  if (isNight) {
+    playNightMusic();
+  } 
+  else {
+    playSound();
+  }
+
+  return () => {
+    if (sound) {
+      sound.unloadAsync(); // Unload any playing sound
+    }
+  };
+}, [isNight]); // The effect will run when `isNight` changes
+
+// Check for changes in playerHealth and switch to secondary bgm if health drops below 30
+useEffect(() => {
+  console.log("Health changed: ", playerHealth);
+  if (parseInt(playerHealth) <= 30 && !secondaryMusicPlaying) {
+    playDeadMusic();
+    setSecondaryMusicPlaying(true); // Update state to indicate secondary music is playing
+  } 
+  else if (parseInt(playerHealth) > 30 && secondaryMusicPlaying) {
+    if (sound) {
+      sound.unloadAsync(); // Unload the secondary background music
+    }
+    setSecondaryMusicPlaying(false); // Update state to indicate secondary music is not playing
+    if (isNight) {
+      playNightMusic();
+    } 
+    else {
+      playSound();
+    } // Start playing the main background music again
+  }
+}, [playerHealth, secondaryMusicPlaying]);
+
+  useEffect(() => {
+    if (healthBarRef.current) {
+      const currentMood = healthBarRef.current.getMood();
+      setMood(currentMood);
+    }
+  }, [playerHealth]);
+
+
+  const isLandscape = windowDimensions.width > windowDimensions.height;
 
   //custom styles start here -- should put these in their own class
   const duckPosition = {
@@ -335,66 +387,8 @@ const PetHouse = () => {
       shadowOpacity: 1,
   };
 
-  useEffect(() => {
-    // Set up an effect to move to the next task when the current one is completed
-    if (currentTaskIndex !== null && tasks[currentTaskIndex].completed) {
-      // Find the index of the next incomplete task
-      const nextIncompleteTaskIndex = tasks.findIndex(task => !task.completed);
-  
-      // Move to the next incomplete task index if found
-      if (nextIncompleteTaskIndex !== -1) {
-        setCurrentTaskIndex(nextIncompleteTaskIndex);
-      }
-    }
-  }, [currentTaskIndex, tasks]);
-  
-  const handleCompleteTask = () => {
-    // Function to mark the current task as completed
-    if (currentTaskIndex !== null) {
-      completeTask(currentTaskIndex); // Mark the current task as completed
-    }
-  };
-
-
-// Play main bgm when the component mounts
-useEffect(() => {
-  playSound(); // Play the main background music
-  return () => {
-    // Clean up function (runs when the component unmounts)
-    if (sound) {
-      sound.unloadAsync(); // Unload the main background music
-    }
-  };
-}, []);
-
-// Check for changes in playerHealth and switch to secondary bgm if health drops below 30
-useEffect(() => {
-  console.log("Health changed: ", playerHealth);
-  if (parseInt(playerHealth) <= 30 && !secondaryMusicPlaying) {
-    playSound2(); // Play the secondary background music
-    setSecondaryMusicPlaying(true); // Update state to indicate secondary music is playing
-  } else if (parseInt(playerHealth) > 30 && secondaryMusicPlaying) {
-    // If health is above 30 and secondary music is playing, stop the secondary music
-    if (sound) {
-      sound.unloadAsync(); // Unload the secondary background music
-    }
-    setSecondaryMusicPlaying(false); // Update state to indicate secondary music is not playing
-    playSound(); // Start playing the main background music again
-  }
-  // No return function needed here since we want the music to continue playing
-}, [playerHealth, secondaryMusicPlaying]);
-
-  useEffect(() => {
-    if (healthBarRef.current) {
-      const currentMood = healthBarRef.current.getMood();
-      setMood(currentMood);
-    }
-  }, [playerHealth]);
-
-
   return (
     <ImageBackground source={backgroundImageSource} style={styles.backgroundImage}>
-      {/* <HealthProvider showHealthBar = {true}> */}
       <TapProvider>
       <View style={styles.container}>
         <View style = {topNavContainer}>
@@ -421,7 +415,7 @@ useEffect(() => {
 
 
         </View>
-        {/* <RenderHealthBar> </RenderHealthBar> */}
+
          <HealthBar Optional={healthPosition} ref={healthBarRef} currentHealthProp={health} />
 
          {isVisible && (<Image source={ani}  style= {{position: 'absolute', zIndex: 999}}/>)} 
@@ -473,7 +467,6 @@ useEffect(() => {
 
       </View>
       </TapProvider>
-      {/* </HealthProvider> */}
     </ImageBackground>
 
   );
