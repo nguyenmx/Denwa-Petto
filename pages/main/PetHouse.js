@@ -418,11 +418,11 @@ useEffect(() => {
 
          <HealthBar Optional={healthPosition} ref={healthBarRef} currentHealthProp={health} />
 
-         {isVisible && (<Image source={ani}  style= {{position: 'absolute', zIndex: 999}}/>)} 
+         {isVisible && (<Image source={ani}  style= {{position: 'absolute', zIndex: 1000}}/>)} 
          
 
          {isNight && (
-          <Image source={zzz} style={{ position: 'absolute', zIndex: 997, bottom: isLandscape ? 40 : 290 , left: isLandscape ? 250 :20, transform: [{ scale: .5 }] }} />
+          <Image source={zzz} style={{ position: 'absolute', zIndex: 1001, bottom: isLandscape ? 40 : 290 , left: isLandscape ? 250 :20, transform: [{ scale: .5 }] }} />
           )}
 
         <TouchableOpacity onPress={toggleDayNight} style={lightPosition}>

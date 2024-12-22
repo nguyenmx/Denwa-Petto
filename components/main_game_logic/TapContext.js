@@ -105,6 +105,7 @@ export const TapProvider = ({ children}) => {
             //increasing the number subtracted will move the cursor to the left
             left: handPosition.x - 58,
             top: handPosition.y,
+            zIndex: 1001
           }}
           onPress={() => setShowHandImage(false)}
           {...panResponder.panHandlers}
