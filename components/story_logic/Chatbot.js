@@ -123,10 +123,14 @@ const Chatbot = ({ navigation, route }) => {
                             <BackArrow />
                         </TouchableOpacity>
                         <ImageBackground source={currentProfile.animalType} style={styles.avatar} />
-                        <Text style={styles.animalName}>{currentProfile.name}</Text>
-                        {/* <Text style={styles.animalName}>{`, ${currentProfile.age}`}</Text> */}
-                        {currentProfile.verified && <Image source={verify} style={styles.verifiedIcon} />}
-                        {/* <ImageBackground source={profileIcon} style={styles.profileIcon} /> */}
+                        <View style={styles.nameContainer}>
+                            <View style={styles.verifiedContainer}>
+                                <Text style={styles.animalName}>{currentProfile.name}</Text>
+                                {currentProfile.verified && <Image source={verify} style={styles.verifiedIcon} />}
+                            </View>
+                            <Text style={styles.occName}>{currentProfile.occupation}</Text>
+                        </View>
+            
                         {/* <TouchableWithoutFeedback onPress={clearChat}>
                             <Image source={eraserIcon} style={styles.eraseIcon} />
                         </TouchableWithoutFeedback> */}
@@ -139,18 +143,20 @@ const Chatbot = ({ navigation, route }) => {
                         contentContainerStyle={styles.chatContainer}
                     />
                     <View style={styles.inputContainer}>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Start Typing..."
-                            placeholderTextColor="#aaa"
-                            value={userInput}
-                            onChangeText={setUserInput}
-                        />
-                        {/* <TouchableOpacity style={styles.button} onPress={handleUserInput}>
-                            <Text style={styles.buttonText}>Send</Text>
-                        </TouchableOpacity> */}
+                        {/* <View style={styles.sendContainer}> */}
+                            <TextInput
+                                style={styles.input}
+                                placeholder="Start Typing..."
+                                placeholderTextColor="#aaa"
+                                value={userInput}
+                                onChangeText={setUserInput}
+                            />
+                            <TouchableOpacity style={styles.button} onPress={handleUserInput}>
+                                <Text style={styles.buttonText}>Send</Text>
+                            </TouchableOpacity>
+                        {/* </View> */}
                     </View>
-                    {loading && <Text style={styles.loading}>Loading...</Text>}
+                    {/* {loading && <Text style={styles.loading}>Loading...</Text>} */}
                     {error && <Text style={styles.error}>{error}</Text>}
                 </View>
             </ImageBackground>
@@ -173,17 +179,40 @@ const styles = StyleSheet.create({
         width: '100%',
         justifyContent: 'flex-end',
     },
+    occName: {
+        left: 5,
+        top: 12,
+        fontSize: 12,
+        color: "#545253"
+    },
     verifiedIcon: {
-        width: 30,
-        height: 30,
-        left: 12
+        left: 7,
+        top: 11,
+        width: 25,
+        height: 25,
+    },
+    verifiedContainer: {
+        flexDirection: "row"
+    },
+    nameContainer: {
+        flexDirection: "column"
     },
     avatar: {
-        width: 80,
-        height: 80,
+        top: 9,
+        width: 55,
+        height: 55,
+        borderRadius: 35, // Half of width or height for a perfect circle
+        borderColor: "grey",
+        borderWidth: 1, // Thickness of the border
+        overflow: "hidden", // Ensures the image stays within the circle
+      },
+    backButton: {
+        top: 15
       },
     animalName: {
-        fontSize: 30,
+        left: 5,
+        top:12,
+        fontSize: 22,
         // fontFamily: 'NiceTango-K7XYo'
       },
     topNavContainer: {
@@ -193,13 +222,18 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         height: 100,
         alignItems: 'center', // Vertically align items
+        borderBottomWidth: 2, // Optional: Adds a border to separate from content
+        borderColor: "#ccc", // Optional: Border color for visual clarity
 
     },
-    botAvatar: {
-        width: 80,
-        height: 80,
-        borderRadius: 20,
-      },
+    sendContainer: {
+        flexDirection: 'row',
+    },
+    // botAvatar: {
+    //     width: 80,
+    //     height: 80,
+    //     borderRadius: 20,
+    //   },
     profileIcon: {
         width: 31,
         height: 38,
@@ -223,21 +257,22 @@ const styles = StyleSheet.create({
     inputContainer: {
         flexDirection: "row",
         alignItems: "center",
-        marginTop: 10,
-        backgroundColor: "white",
-        // width: window.width,
-        padding: 30
+        padding: 22,
+        backgroundColor: "#f0f0f0",
+        borderTopWidth: 2, // Optional: Adds a border to separate from content
+        borderColor: "#ccc", // Optional: Border color for visual clarity
+        
     },
     input: {
         flex: 1,
-        height: 50,
+        height: 45,
         marginRight: 10,
         padding: 8,
-        borderColor: "#333",
+        borderColor: "#f0daee",
         borderWidth: 1,
         borderRadius: 25,
-        color: "lightpink",
-        backgroundColor: "#fff",
+        color: "black",
+        backgroundColor: "#f0daee",
     },
     button: {
         padding: 10,
