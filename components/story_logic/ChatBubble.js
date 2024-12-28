@@ -3,7 +3,7 @@ import {View, Text, StyleSheet, TouchableOpacity, Image} from "react-native";
 import {Ionicons} from "react-native-vector-icons";
 // import back from '../images/PlayableAnimals/capyKnife.gif';
 
-const ChatBubble = ({ role, text, onSpeech, icon}) => {
+const ChatBubble = ({ role, text, onSpeech, icon, background}) => {
     return (
         <View
         style={[
@@ -13,6 +13,7 @@ const ChatBubble = ({ role, text, onSpeech, icon}) => {
         >
         {role === "model" && (
             <TouchableOpacity onPress={onSpeech} style={styles.iconContainer}>
+                <Image source={background} style={styles.backgroundIcon} />
                 <Image source={icon} style={styles.modelIcon} />
             </TouchableOpacity>
         )}
@@ -52,6 +53,14 @@ const styles = StyleSheet.create({
         alignItems: "flex-start", // Align items to the top
         marginBottom: 10,
     },
+    backgroundIcon: {
+        width: '100%',
+        height: '100%',
+        resizeMode: 'cover',
+        position: 'absolute', // Position this image behind the overlay image
+        top: 0,
+        left: 0,
+    },
     chatContainer: {
         flexDirection: "row"
     },
@@ -70,10 +79,18 @@ const styles = StyleSheet.create({
     modelIcon: {
         width: 45,
         height: 45,
-        borderRadius: 35, // Half of width or height for a perfect circle
-        borderColor: "grey",
-        borderWidth: 1, // Thickness of the border
-        overflow: "hidden", // Ensures the image stays within the circle
+        // borderRadius: 35,
+        // borderColor: "grey",
+        // borderWidth: 1,
+        // overflow: "hidden",
+    },
+    iconContainer: {
+        width: 45,
+        height: 45,
+        borderRadius: 40,
+        overflow: 'hidden',
+        borderWidth: 2,
+        borderColor: 'grey',
     }
 
 })

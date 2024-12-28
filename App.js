@@ -58,6 +58,7 @@ export default function App() {
     "StayPixelRegular-EaOxl": require("./assets/fonts/StayPixelRegular-EaOxl.ttf"),
     "BowlbyOneSC-Regular": require("./assets/fonts/BowlbyOneSC-Regular.ttf"),
     "Gunkid-0W9yv": require("./assets/fonts/Gunkid-0W9yv.otf"),
+    "Nunito-Medium": require("./assets/fonts/Nunito-Medium.ttf"),
   })
 
   useEffect(() => {

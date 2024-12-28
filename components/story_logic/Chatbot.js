@@ -108,6 +108,8 @@ const Chatbot = ({ navigation, route }) => {
 
     const renderChatItem = ({ item }) => (
         <ChatBubble
+            background= {currentProfile.image}
+            icon= {currentProfile.animalType}
             role={item.role}
             text={item.parts[0].text}
             onSpeech={() => handleSpeech(item.parts[0].text)}
@@ -122,7 +124,10 @@ const Chatbot = ({ navigation, route }) => {
                         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
                             <BackArrow />
                         </TouchableOpacity>
-                        <ImageBackground source={currentProfile.animalType} style={styles.avatar} />
+                        <View style={styles.avatarContainer}>
+                            <Image source={currentProfile.image} style={styles.backgroundIcon} />
+                            <Image source={currentProfile.animalType} style={styles.avatar} />
+                        </View>
                         <View style={styles.nameContainer}>
                             <View style={styles.verifiedContainer}>
                                 <Text style={styles.animalName}>{currentProfile.name}</Text>
@@ -183,7 +188,7 @@ const styles = StyleSheet.create({
         left: 5,
         top: 12,
         fontSize: 12,
-        color: "#545253"
+        color: "#545253",
     },
     verifiedIcon: {
         left: 7,
@@ -191,20 +196,38 @@ const styles = StyleSheet.create({
         width: 25,
         height: 25,
     },
+    avatarContainer: {
+        top: 12,
+        width: 53,
+        height: 53,
+        borderRadius: 40,
+        overflow: 'hidden',
+        borderWidth: 2,
+        borderColor: 'grey',
+    },
+    backgroundIcon: {
+        width: '100%',
+        height: '100%',
+        resizeMode: 'cover',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+    },
     verifiedContainer: {
         flexDirection: "row"
     },
     nameContainer: {
-        flexDirection: "column"
+        flexDirection: "column",
+        left: 5
     },
     avatar: {
-        top: 9,
+        // top: 9,
         width: 55,
         height: 55,
-        borderRadius: 35, // Half of width or height for a perfect circle
-        borderColor: "grey",
-        borderWidth: 1, // Thickness of the border
-        overflow: "hidden", // Ensures the image stays within the circle
+        // borderRadius: 35, // Half of width or height for a perfect circle
+        // borderColor: "grey",
+        // borderWidth: 1, // Thickness of the border
+        // overflow: "hidden", // Ensures the image stays within the circle
       },
     backButton: {
         top: 15
@@ -212,8 +235,8 @@ const styles = StyleSheet.create({
     animalName: {
         left: 5,
         top:12,
-        fontSize: 22,
-        // fontFamily: 'NiceTango-K7XYo'
+        fontSize: 18,
+        fontFamily: "Nunito-Medium",
       },
     topNavContainer: {
         paddingHorizontal: 30, // Padding on left and right
@@ -248,6 +271,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         marginTop: 40,
         textAlign: "center",
+        fontFamily: "Nunito-VariableFont_wght"
     },
     chatContainer: {
         flexGrow: 1,
